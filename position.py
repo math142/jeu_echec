@@ -25,6 +25,10 @@ class Position:
         return [Position(self.ligne + 1,self.colonne + 0)]
     def avancement_pion_premier_noir(self):
         return [Position(self.ligne + 2,self.colonne + 0)]
+    def prise_pion_blanc(self):
+        return [Position(self.ligne - 1,self.colonne - 1),Position(self.ligne - 1,self.colonne + 1)]
+    def prise_pion_noir(self):
+        return [Position(self.ligne + 1,self.colonne - 1),Position(self.ligne +1,self.colonne +1)]
     def avancement(self):
          return [Position(self.ligne + 1,self.colonne + 0),Position(self.ligne + 2,self.colonne + 0),Position(self.ligne + 3,self.colonne + 0),Position(self.ligne + 4,self.colonne + 0),Position(self.ligne + 5,self.colonne + 0),
          Position(self.ligne + 6,self.colonne + 0),Position(self.ligne + 7,self.colonne + 0),Position(self.ligne - 1,self.colonne + 0),Position(self.ligne - 2,self.colonne + 0),Position(self.ligne -3,self.colonne + 0),
@@ -39,6 +43,14 @@ class Position:
     def deplacement_cavalier(self):
         return [Position(self.ligne + 2,self.colonne + 1),Position(self.ligne +2,self.colonne - 1 ),Position(self.ligne -2,self.colonne + 1),Position(self.ligne - 2,self.colonne - 1),Position(self.ligne -2,self.colonne + 1),
         Position(self.ligne + 1,self.colonne + 2),Position(self.ligne +1,self.colonne - 2 ),Position(self.ligne -1,self.colonne + 2),Position(self.ligne -1,self.colonne - 2 )]
+    def grand_roque_blanc(self):
+        return [Position(self.ligne,self.colonne - 2)]
+    def grand_roque_noir(self):
+        return [Position(self.ligne,self.colonne - 2)]
+    def petit_roque_blanc(self):
+        return [Position(self.ligne,self.colonne + 2)]
+    def petit_roque_noir(self):
+        return [Position(self.ligne,self.colonne + 2)]
 
     def __repr__(self):
         """Méthode spéciale indiquant à Python comment représenter une instance de Position par une chaîne de

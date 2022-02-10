@@ -13,7 +13,7 @@ class FenetrePartie(Tk):
         self.canvasEchequier = CanvasEchequier(self,self.partie.echequier,60)
         self.canvasEchequier.grid(column=0, row=0)
         self.canvasEchequier.bind('<Button-1>',self.selectionner)
-
+        self.couleur_joueur = self.partie.couleur_joueur_courant
         self.messages = Label(self)
         self.messages.grid()
 

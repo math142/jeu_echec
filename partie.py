@@ -18,6 +18,7 @@ class Partie:
         return True, ""
     def position_cible_valide(self,position_cible):
         if self.echequier.piece_peut_se_deplacer_vers(self.position_source_selectionnee,position_cible):
+
             return True,""
         return False, "Position cible invalide"
     def verification_positions_deplacement(self,position_source_clic,position_cible_clic):

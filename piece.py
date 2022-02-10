@@ -2,6 +2,7 @@ class Piece:
     def __init__(self,couleur,type_piece):
         self.couleur = couleur
         self.type_piece = type_piece
+        
     def est_pion(self):
         return self.type_piece == "pion"
     def est_dame(self):

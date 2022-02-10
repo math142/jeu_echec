@@ -69,11 +69,11 @@ class CanvasEchequier(Canvas):
             elif piece.est_noire() and piece.est_tour():
                 icone = "♜"
             elif piece.est_noire() and piece.est_roi():
-                icone = "♛"
-            elif piece.est_noire() and piece.est_dame():
                 icone = "♚"
+            elif piece.est_noire() and piece.est_dame():
+                icone =  "♛"
             
-            
+         
             
 
             police_de_caractere = ('Deja Vu', self.n_pixels_par_case//2)
