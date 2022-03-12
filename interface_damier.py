@@ -16,7 +16,7 @@ class FenetrePartie(Tk):
         self.couleur_joueur = self.partie.couleur_joueur_courant
         self.messages = Label(self)
         self.messages.grid()
-
+        self.peut_changer_couleur = True
         self.title("Jeu d'echeque")
 
         self.grid_columnconfigure(0,weight=1)
@@ -44,23 +44,50 @@ class FenetrePartie(Tk):
             self.tour()
             self.canvasEchequier.actualiser()
             self.liste_position = []
+        
     def tour(self):
         try:
+        
             position_source,position_cible = self.partie.verification_positions_deplacement(self.liste_position[0],self.liste_position[1])
+            self.partie.echequier.twice = True
+            self.coup_precedent = []
             resultat_deplacement = self.canvasEchequier.echequier.deplacer(position_source,position_cible)
             if resultat_deplacement == "erreur":
                 self.messages['foreground'] = 'red'
                 self.messages['text'] = "Une erreur s'est produite lors du déplacement."
                 self.liste_position = []
                 return
-
-            if self.partie.couleur_joueur_courant == 'blanc':
-                self.partie.couleur_joueur_courant = 'noir'
+            self.coup_precedent.append(position_source)
+            self.coup_precedent.append(position_cible)
+            if self.partie.echequier.joueur_est_en_echec == True and self.partie.echequier.est_en_echec(self.partie.couleur_joueur_courant,'echec',Position(0,0)):
+                print("enter ")
+                self.canvasEchequier.echequier.deplacer(self.coup_precedent[1],self.coup_precedent[0])
+                self.coup_precedent.clear()
+                self.peut_changer_couleur = False
             else:
-                self.partie.couleur_joueur_courant = 'blanc'
-        except TypeError:
-            self.messages['foreground'] = 'red'
-            self.messages['text'] = "Deplacement impossible"
+                self.partie.echequier.echec = False
+                self.peut_changer_couleur = True
+
+            if self.peut_changer_couleur == True:
+                if self.partie.couleur_joueur_courant == 'blanc':
+                    self.partie.couleur_joueur_courant = 'noir'
+                    
+                else:
+                    self.partie.couleur_joueur_courant = 'blanc'
+                if self.canvasEchequier.echequier.est_echec_math(self.partie.couleur_joueur_courant):
+                    self.messages['foreground'] = 'red'
+                    self.messages['text'] = 'echec et math'
+                if self.canvasEchequier.echequier.est_en_echec(self.partie.couleur_joueur_courant,'echec',Position(0,0)):
+                        self.messages['foreground'] = 'red'
+                        self.messages['text'] = 'echec'
+                        self.partie.echequier.joueur_est_en_echec = True        
+                self.partie.echequier.twice = False
+                self.partie.echequier.echec = True
+                if self.partie.echequier.est_echec_math(self.partie.couleur_joueur_courant):
+                    self.messages['foreground'] = 'red'
+                    self.messages['text'] = 'Echec et Math'
+       
+    
         except AttributeError:
             self.messages['foreground'] = 'red'
             self.messages['text'] = "Deplacement impossible"

@@ -8,6 +8,7 @@ class Partie:
         self.echequier = Echequier()
         self.position_selectionnee = None
         self.couleur_joueur_courant = 'blanc' 
+        
     def position_source_valide(self,position_source):
         piece_source = self.echequier.recuperer_piece_a_position(position_source)
         
