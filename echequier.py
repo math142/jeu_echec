@@ -1,3 +1,4 @@
+from matplotlib.pyplot import pie
 from piece import Piece
 from position import Position
 
@@ -155,6 +156,8 @@ class Echequier:
             piece = self.recuperer_piece_a_position(position_source)
             self.cases[position_cible] = piece
             del self.cases[position_source]
+            if piece.est_pion() and (piece.couleur == 'blanc' and position_cible.ligne == 0 or piece.couleur == 'noir' and position_cible.ligne == 7):
+                return 'Last'
         else:
             return 'erreur'
         return resultat
@@ -297,4 +300,5 @@ class Echequier:
                return False
        return True
        
-       
+    def creation_nouvelle_piece(self,joueur_courant,piece,position_cible):
+        self.cases[position_cible] = Piece(joueur_courant,piece)

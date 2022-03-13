@@ -1,5 +1,8 @@
 
-from tkinter import Tk,Label
+from tkinter import Tk,Label, simpledialog, ttk
+
+from matplotlib.pyplot import text
+from numpy import piecewise
 from canvasEchequier import CanvasEchequier
 from partie import Partie
 from position import Position
@@ -59,9 +62,13 @@ class FenetrePartie(Tk):
                 return
             self.coup_precedent.append(position_source)
             self.coup_precedent.append(position_cible)
-            if self.partie.echequier.joueur_est_en_echec == True and self.partie.echequier.est_en_echec(self.partie.couleur_joueur_courant,'echec',Position(0,0)):
-                print("enter ")
-                self.canvasEchequier.echequier.deplacer(self.coup_precedent[1],self.coup_precedent[0])
+            if resultat_deplacement == 'Last':
+                piece = self.nouvelle_piece()
+                self.partie.echequier.creation_nouvelle_piece(self.partie.couleur_joueur_courant,piece,self.coup_precedent[1])
+            if self.partie.echequier.joueur_est_en_echec == True and (self.partie.echequier.est_en_echec(self.partie.couleur_joueur_courant,'echec',Position(0,0))):
+                piece_originale = self.partie.echequier.recuperer_piece_a_position(self.coup_precedent[1])
+                self.partie.echequier.cases[self.coup_precedent[0]] = piece_originale
+                del self.partie.echequier.cases[self.coup_precedent[1]]
                 self.coup_precedent.clear()
                 self.peut_changer_couleur = False
             else:
@@ -86,12 +93,24 @@ class FenetrePartie(Tk):
                 if self.partie.echequier.est_echec_math(self.partie.couleur_joueur_courant):
                     self.messages['foreground'] = 'red'
                     self.messages['text'] = 'Echec et Math'
-       
+                    if self.partie.couleur_joueur_courant == 'blanc':
+                        self.partie_gagne('noir')
+                    else:
+                        self.partie_gagne('blanc')
+        except TypeError:
+            self.messages['foreground'] = 'red'
+            self.messages['text'] = "Deplacement impossible"
     
         except AttributeError:
             self.messages['foreground'] = 'red'
             self.messages['text'] = "Deplacement impossible"
-       
+    def partie_gagne(self,joueur):
+        msg = '{0} a gagné la partie'.format(joueur)
+        label = ttk.Label(self,text=msg)
+        label.grid(row=0,column=0,pady=50)    
+    def  nouvelle_piece(self):
+        piece = simpledialog.askstring(title="Nouvelle Piece",prompt="Choissisez une piece")
+        return piece
 if __name__ == '__main__':
     # Point d'entrée principal du jeu
     fenetre = FenetrePartie()
