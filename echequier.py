@@ -1,4 +1,4 @@
-from matplotlib.pyplot import pie
+
 from piece import Piece
 from position import Position
 
@@ -66,6 +66,13 @@ class Echequier:
             Position(1,1):Piece("noir","pion"),
             Position(1,0):Piece("noir","pion")
         }
+    def positions_possibles(self):
+        positions_pos = []
+        for i in range(0,7):
+            for j in range(0,8):
+                positions_pos.append((Position(i,j)))
+        return positions_pos
+
     def recuperer_piece_a_position(self, position):
     
         if position not in self.cases:
@@ -302,3 +309,17 @@ class Echequier:
        
     def creation_nouvelle_piece(self,joueur_courant,piece,position_cible):
         self.cases[position_cible] = Piece(joueur_courant,piece)
+    def piece_peut_se_deplacer(self,joueur_courant):
+        for item,value in self.cases.items():
+            if value.couleur != joueur_courant:
+                pass
+            else:
+                positions_possibles = self.positions_possibles()
+                for i in range(len(positions_possibles)):
+                    if self.piece_peut_se_deplacer_vers(item,positions_possibles[i]):
+                        return False
+        return True
+    def est_pat(self,joueur_courant,appelation,position_roi):
+        if self.est_en_echec(joueur_courant,appelation,position_roi) == False and self.piece_peut_se_deplacer(joueur_courant):
+            return True
+        return False

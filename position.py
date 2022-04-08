@@ -1,3 +1,6 @@
+from selectors import EpollSelector
+
+
 class Position:
     def __init__(self,ligne,colonne):
         self.ligne = int(ligne)
@@ -51,7 +54,44 @@ class Position:
         return [Position(self.ligne,self.colonne + 2)]
     def petit_roque_noir(self):
         return [Position(self.ligne,self.colonne + 2)]
+    def conversion(self,pos):
+        colonne = ['a','b','c','d','e','f','g','h']
+        ligne = [8,7,6,5,4,3,2,1]
+        for i in range(len(ligne)):
+            lettre = ligne[pos.ligne]
+            number = colonne[pos.colonne]
+        algebrique = number + str(lettre)
+        return algebrique
+    def lettre_piece(self,type_piece):
+        if type_piece == 'Dame':
+            letter = 'D'
+        elif type_piece == 'roi':
+            letter = 'R'
+        elif type_piece == 'Tour':
+            letter = 'T'
+        elif type_piece == 'fou':
+            letter = 'C'
+        elif type_piece == 'cavalier':
+            letter = 'C'
+        else:
+            letter = ''
+        return letter
+    def conversion_en_algebrique(self,position_source,position_cible,type_piece_source,type_piece_cible,resultat,est_en_echec):
+        
+        letter_source = self.lettre_piece(type_piece_source)
+        letter_cible = self.lettre_piece(type_piece_cible)
+        if resultat == 'prise':
+            raw_pos_source =  self.conversion(position_source)
+            raw_pos_cible = self.conversion(position_cible)
+            position_algebrique = letter_source + raw_pos_source + 'X' + letter_cible + raw_pos_cible
+        elif est_en_echec == True:
+            raw_pos_cible = self.conversion(position_cible)
+            position_algebrique = letter_source + raw_pos_cible + '+'
+        else:
 
+            raw_pos_cible = self.conversion(position_cible)
+            position_algebrique = letter_source + raw_pos_cible
+        return position_algebrique
     def __repr__(self):
         """Méthode spéciale indiquant à Python comment représenter une instance de Position par une chaîne de
         caractères. Notamment utilisé pour imprimer une position à l'écran.
@@ -60,11 +100,6 @@ class Position:
         return '({}, {})'.format(self.ligne, self.colonne)
 
     def __hash__(self):
-        """Méthode spéciale indiquant à Python comment "hasher" une Position. Cette méthode est nécessaire si on veut
-        utiliser une classe que nous avons définie nous mêmes comme clé d'un dictionnaire.
-        Les étudiants(es) curieux(ses) peuvent consulter wikipédia pour en savoir plus:
-            https://fr.wikipedia.org/wiki/Fonction_de_hachage
-
-        """
+        
         return hash(str(self))
 
